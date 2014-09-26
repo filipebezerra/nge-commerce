@@ -1,0 +1,108 @@
+<!doctype html>
+<html ng-app="storeApp" lang="en">
+<head>
+    <title>Angular Store</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+
+<body class="container list-group" ng-controller="StoreController as store">
+<div class="page-header">
+    <h1>Angular Shop Store</h1>
+    <small>Buy what you like!!!</small>
+
+    <div class="pull-right">
+        <label for="numLimit">Limit the results: </label>
+        <input
+                id="numLimit"
+                class="input"
+                type="number"
+                placeholder="Limit the list"
+                ng-model="numLimit"
+                min="0"
+                max="{{store.products.length}}"
+                step="1">
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="container">
+        <h3><span class="label label-info">Total: </span><span class="label label-default">{{amount | currency}}</span>
+        </h3>
+    </div>
+</nav>
+
+<div class="list-group-item" ng-controller="PanelController as panel"
+     ng-repeat="product in store.products | limitTo: numLimit">
+
+    <section class="tab">
+
+        <ul class="nav nav-pills">
+            <li ng-class="{active: panel.isSelected(1)}">
+                <a href="#" ng-click="panel.selectPanel(1)">Description</a>
+            </li>
+
+            <li ng-class="{active: panel.isSelected(2)}">
+                <a href="#" ng-click="panel.selectPanel(2)">Specification</a>
+            </li>
+
+            <li ng-class="{active: panel.isSelected(3)}">
+                <a href="#" ng-click="panel.selectPanel(3)">Reviews</a>
+            </li>
+        </ul>
+
+        <!-- Product details-->
+        <div class="panel" ng-show="panel.isSelected(1)">
+            <div class="row">
+                <div class="col-xs-6 col-md-4 col-md-offset-4">
+                    <div class="thumbnail">
+                        <img ng-src="{{product.image}}"/>
+
+                        <div class="caption">
+                            <h1>{{product.name | uppercase}} <span class="badge">{{product.quantity}}</span></h1>
+
+                            <h2>Price: {{product.price | currency}}</h2>
+
+                            <p>Model: {{product.model | uppercase}}</p>
+
+                            <button
+                                    class="btn btn-success"
+                                    ng-disabled="! product.available"
+                                    ng-click="store.buy(product)">
+                                Add to Cart
+                            </button>
+                            <em class="label label-warning"
+                                ng-show="! product.available">Not available! Sorry.</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" ng-show="panel.isSelected(2)">
+            <h4>Specification</h4>
+            <blockquote>None yet</blockquote>
+        </div>
+
+        <!-- Reviews -->
+        <div class="panel" ng-show="panel.isSelected(3)">
+            <h4>Reviews</h4>
+            <h5>{{product.name}} {{product.model}}</h5>
+
+            <div class="container">
+                <blockquote ng-repeat="review in product.reviews">
+                    <b>{{review.stars}} Stars</b>
+                    {{review.message}}
+                    <br/><cite>by: {{review.author}}</cite>
+                </blockquote>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<script src="js/storeApp.js"></script>
+</body>
+</html>
