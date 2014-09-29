@@ -1,0 +1,26 @@
+<div class="panel" ng-show="panel.isSelected(1)">
+    <div class="row">
+        <div class="col-xs-6 col-md-4 col-md-offset-4">
+            <div class="thumbnail">
+                <img ng-src="{{product.image}}"/>
+
+                <div class="caption">
+                    <h1>{{product.name | uppercase}} <span class="badge">{{product.quantity}}</span></h1>
+
+                    <h2>Price: {{product.price | currency}}</h2>
+
+                    <p>Model: {{product.model | uppercase}}</p>
+
+                    <button
+                            class="btn btn-success"
+                            ng-disabled="! product.available"
+                            ng-click="store.buy(product)">
+                        Add to Cart
+                    </button>
+                    <em class="label label-warning"
+                        ng-show="! product.available">Not available! Sorry.</em>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

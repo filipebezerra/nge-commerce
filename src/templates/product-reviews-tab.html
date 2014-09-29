@@ -1,0 +1,57 @@
+<div class="panel" ng-show="panel.isSelected(3)">
+    <h4>Reviews</h4>
+    <h5>{{product.name}} {{product.model}}</h5>
+
+    <div class="container">
+        <blockquote ng-repeat="review in product.reviews">
+            <strong>{{review.stars}} Stars</strong>
+            {{review.message}}
+            <br/><cite class="clearfix">-{{review.author}} <strong>on</strong> {{review.createdOn | date : 'MMM, dd of yyyy hh:mm'}}</cite>
+        </blockquote>
+
+        <form name="reviewForm"
+              ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)"
+              novalidate>
+            <blockquote>
+                <strong>{{reviewCtrl.review.stars}} Stars</strong>
+                {{reviewCtrl.review.message}}
+                <br/><cite class="clearfix">-{{reviewCtrl.review.author}}</cite>
+            </blockquote>
+
+            <h4>Submit a Review</h4>
+            <fieldset class="form-group">
+                <select
+                        ng-model="reviewCtrl.review.stars"
+                        class="form-control"
+                        ng-options="stars for stars in [5,4,3,2,1]"
+                        title="Stars"
+                        equired>
+                    <option value="">Rate the Product</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <textarea
+                        ng-model="reviewCtrl.review.message"
+                        class="form-control"
+                        placeholder="Review Text"
+                        title="Message">
+                </textarea>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input
+                        ng-model="reviewCtrl.review.author"
+                        type="email"
+                        class="form-control"
+                        placeholder="Email"
+                        title="Email"
+                        required>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input type="submit" value="Submit Review" class="btn btn-primary pull-right">
+            </fieldset>
+        </form>
+    </div>
+</div>

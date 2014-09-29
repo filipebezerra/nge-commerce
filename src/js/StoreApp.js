@@ -64,7 +64,7 @@
 
     var storeApp = angular.module('storeApp', []);
 
-	storeApp.controller("StoreController", ['$scope', function($scope) {
+	storeApp.controller("StoreController", function($scope) {
 		this.products = data;
 
         $scope.numLimit = data.length;
@@ -81,9 +81,9 @@
                 item.available = false;
             };
         };
-	}]);
+	});
 
-    storeApp.controller("PanelController", ['$scope', function($scope) {
+    storeApp.controller("PanelController", function() {
         this.panel = 1;
 
         this.selectPanel = function(setPanel) {
@@ -93,6 +93,47 @@
         this.isSelected = function(checkPanel) {
             return this.panel === checkPanel;
         };
-    }]);
+    });
+
+    storeApp.controller('ReviewController', function(){
+       this.review = [];
+
+        this.addReview = function(product) {
+            this.review.createdOn = Date.now();
+            product.reviews.push(this.review);
+            this.review = [];
+        };
+    });
+
+    storeApp.directive('productDetailsTab', function() {
+        return {
+            restrict : 'E',
+            templateUrl : 'templates/product-details-tab.html'
+        };
+    });
+
+    storeApp.directive('productSpecsTab', function() {
+        return {
+            restrict : 'E',
+            templateUrl : 'templates/product-specs-tab.html'
+        };
+    });
+
+    storeApp.directive('productReviewsTab', function() {
+        return {
+            restrict : 'E',
+            templateUrl : 'templates/product-reviews-tab.html',
+            controller : function() {
+                this.review = [];
+
+                this.addReview = function(product) {
+                    this.review.createdOn = Date.now();
+                    product.reviews.push(this.review);
+                    this.review = [];
+                };
+            },
+            controllerAs : 'reviewCtrl'
+        };
+    });
 
 })();
